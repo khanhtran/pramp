@@ -22,8 +22,18 @@ public class NumberOfPath {
 	public void solve() {
 		Object result = numberOfPath(n - 1, n - 1);
 		System.out.println("result: " + result);
+		
+		Object result2 = numberOfPath2();
+		System.out.println("result2: " + result2);
 	}
-
+	
+	/**
+	 * Time : O(n^2)
+	 * Space: O(n^2)
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	private int numberOfPath(int i, int j) {
 		if (i < 0 || j < 0) {
 			return 0;
@@ -42,7 +52,33 @@ public class NumberOfPath {
 
 		return memo[i][j];
 	}
-
+	/**
+	 * Time : 	O(n^2)
+	 * Space: 	O(n)
+	 * @return
+	 */
+	private int numberOfPath2() {
+		int[] lastRow = new int[n];
+		int[] row = new int[n];
+		for (int j = 0; j < n; j++) {
+			lastRow[j] = 1;
+		}
+		
+		int i = 1;
+		while ( i < n) {
+			for (int j = i; j < n; j++) {
+				if (j == i) {
+					row [j] = lastRow[j];
+				} else if (j > i){
+					row[j] = row[j - 1] + lastRow[j];
+				}
+				lastRow[j] = row[j];
+			}
+			i++;
+		}
+		return row[n-1];
+	}
+	
 	public static void main(String[] args) {
 		new NumberOfPath(4).solve();
 	}
